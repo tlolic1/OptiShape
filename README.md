@@ -1,0 +1,1 @@
+Web stranica koju smo napravili Omer Masleša i ja kao naš projekat za predmet OOAD. Tema naše stranice je OptiShape, sistem koji omogućava organizovanje treninga i dodjeljivanje personalnih trenera na osnovu određenih informacija i preferenci. Napredak se svakodnevno može pratiti kroz brojne vizuelne prikaze sa ciljem poboljšanja zdravlja korisnika
