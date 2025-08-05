@@ -1,0 +1,794 @@
+﻿@model IEnumerable<OptiShape.Controllers.TrenerViewModel>
+@{
+    ViewData["Title"] = "Prikaz za goste – OptiShape uvod";
+}
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>OptiShape – Vaš prvi korak</h1>
+    </div>
+
+    <div class="welcome-card">
+        <div class="welcome-icon">
+            <i class="bi bi-info-circle-fill"></i>
+        </div>
+        <div class="welcome-content">
+            <h3>Dobrodošli na gost pristup!</h3>
+            <p>
+                Kao gost, imate pristup osnovnom BMI kalkulatoru i kalkulatoru kalorijskog unosa.
+                Za pristup naprednim funkcijama kao što su personalizirani planovi treninga, statistika napretka i personalni treneri,
+                molimo vas da se <a href="/Identity/Account/Register" class="accent-link">registrujete</a> ili <a href="/Identity/Account/Login" class="accent-link">prijavite</a>.
+            </p>
+        </div>
+    </div>
+
+    <div class="card-grid">
+        <div class="calculator-card">
+            <div class="card-header-custom">
+                <h3>Unesite vaše informacije</h3>
+                <div class="icon-container">
+                    <i class="bi bi-calculator"></i>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="form-group">
+                    <label for="goal">Fitness cilj</label>
+                    <div class="custom-select">
+                        <select id="goal">
+                            <option value="lose">Mršanje</option>
+                            <option value="gain">Nabijanje mišićne mase</option>
+                        </select>
+                        <i class="bi bi-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="height">Visina (cm)</label>
+                    <div class="input-with-icon">
+                        <input type="number" id="height" min="100" max="250" placeholder="Unesite visinu">
+                        <i class="bi bi-rulers"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="weight">Težina (kg)</label>
+                    <div class="input-with-icon">
+                        <input type="number" id="weight" min="30" max="300" placeholder="Unesite težinu">
+                        <i class="bi bi-speedometer"></i>
+                    </div>
+                </div>
+                <button type="button" class="primary-button" onclick="calculateResults()">
+                    <span>Izračunaj</span>
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="results-card">
+            <div class="card-header-custom">
+                <h3>Rezultati</h3>
+                <div class="icon-container">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="result-section">
+                    <h4>BMI (Indeks tjelesne mase):</h4>
+                    <div id="bmi-result" class="result-display">Unesite visinu i težinu da vidite vaš BMI</div>
+                    <div id="bmi-category" class="result-category"></div>
+                </div>
+                <div class="result-section">
+                    <h4>Preporučeni dnevni unos kalorija:</h4>
+                    <div id="calorie-result" class="result-display">Popunite formular da vidite preporučeni unos kalorija</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sekcija za trenere -->
+    <div class="trainers-section">
+        <div class="section-header">
+            <i class="bi bi-person-check-fill"></i>
+            <h2>Naši treneri</h2>
+        </div>
+        <div class="info-message">
+            <i class="bi bi-info-circle-fill"></i>
+            <p>Pogledajte naše kvalifikovane trenere. Registrujte se da biste dobili personalizirane planove treninga i ishrane.</p>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="trainers-grid">
+                @foreach (var trener in Model)
+                {
+                    <div class="trainer-card">
+                        <div class="trainer-avatar">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                        <div class="trainer-info">
+                            <h3>@trener.Trener.Ime @trener.Trener.Prezime</h3>
+                            <div class="trainer-details">
+                                <div class="detail-item">
+                                    <span style="font-size: 1.2rem;">📧</span>
+                                    <span>@trener.Trener.Email</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span style="font-size: 1.2rem;">📞</span>
+                                    <span>@trener.Trener.BrojTelefona</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span style="font-size: 1.2rem;">🏋️</span>
+                                    <span>@trener.BrojKorisnika korisnik/a</span>
+                                </div>
+                            </div>
+                            <a href="/Identity/Account/Register" class="trainer-button">
+                                <i class="bi bi-person-plus"></i>
+                                <span>Registruj se i odaberi trenera</span>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="no-trainers">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <p>Trenutno nema dostupnih trenera.</p>
+            </div>
+        }
+    </div>
+
+    <div class="benefits-section">
+        <div class="benefits-card">
+            <div class="card-header-custom">
+                <h3>Zašto se registrovati?</h3>
+                <div class="icon-container">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+            </div>
+            <div class="card-content">
+                <h4>Prednosti registrovanih korisnika:</h4>
+                <ul class="benefits-list">
+                    <li class="benefit-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Personalizirani planovi treninga prilagođeni vašim ciljevima</span>
+                    </li>
+                    <li class="benefit-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Stručna podrška profesionalnih trenera</span>
+                    </li>
+                    <li class="benefit-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Praćenje napretka kroz vrijeme</span>
+                    </li>
+                    <li class="benefit-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Detaljni planovi ishrane bazirani na vašim potrebama</span>
+                    </li>
+                    <li class="benefit-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Studentske pogodnosti i popusti</span>
+                    </li>
+                </ul>
+                <div class="action-buttons">
+                    <a href="/Identity/Account/Register" class="register-button">
+                        <i class="bi bi-person-plus"></i>
+                        <span>Registruj se</span>
+                    </a>
+                    <a href="/Identity/Account/Login" class="login-button">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Prijavi se</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Modern Variables */
+    :root {
+        --primary-color: #4361ee;
+        --primary-light: #4895ef;
+        --primary-dark: #3f37c9;
+        --success-color: #4cc9f0;
+        --warning-color: #f72585;
+        --danger-color: #e63946;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --gray-color: #6c757d;
+        --border-radius: 12px;
+        --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --gradient: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    }
+
+    /* Base Styles */
+    body {
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        color: var(--dark-color);
+        background-color: #f5f7fa;
+        line-height: 1.6;
+    }
+
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    /* Header Styles */
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        position: relative;
+    }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+    /* Welcome Card */
+    .welcome-card {
+        display: flex;
+        background-color: #fff;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 1.5rem;
+        margin-bottom: 2.5rem;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .welcome-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        background: var(--gradient);
+        border-radius: 50%;
+        margin-right: 1.5rem;
+        flex-shrink: 0;
+    }
+
+        .welcome-icon i {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+    .welcome-content {
+        flex: 1;
+    }
+
+        .welcome-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+        }
+
+        .welcome-content p {
+            margin-bottom: 0;
+            color: var(--gray-color);
+        }
+
+    .accent-link {
+        color: var(--primary-color);
+        font-weight: 600;
+        text-decoration: none;
+        position: relative;
+        transition: var(--transition);
+    }
+
+        .accent-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .accent-link:hover {
+            color: var(--primary-dark);
+        }
+
+            .accent-link:hover::after {
+                width: 100%;
+            }
+
+    /* Card Grid */
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    /* Card Styles */
+    .calculator-card,
+    .results-card,
+    .benefits-card {
+        background-color: #fff;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        background: var(--gradient);
+        color: white;
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .card-header-custom h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+        }
+
+    .icon-container {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .icon-container i {
+            font-size: 1.25rem;
+        }
+
+    .card-content {
+        padding: 1.5rem;
+    }
+
+    /* Form Styles */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+    .custom-select {
+        position: relative;
+    }
+
+        .custom-select select {
+            appearance: none;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            background-color: #fff;
+            font-size: 1rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .custom-select i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--gray-color);
+        }
+
+    .input-with-icon {
+        position: relative;
+    }
+
+        .input-with-icon input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            padding-right: 2.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-color);
+        }
+
+        .custom-select select:focus,
+        .input-with-icon input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+    /* Button Styles */
+    .primary-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        background: var(--gradient);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .primary-button span {
+            position: relative;
+            z-index: 1;
+            margin-right: 0.5rem;
+        }
+
+        .primary-button i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .primary-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-dark);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .primary-button:hover::before {
+            opacity: 1;
+        }
+
+    /* Results Styles - Simplified */
+    .result-section {
+        margin-bottom: 1.5rem;
+    }
+
+        .result-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark-color);
+        }
+
+    .result-display {
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-radius: var(--border-radius);
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+    }
+
+    .result-category {
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+
+    /* Trainers Section */
+    .trainers-section {
+        margin-bottom: 2.5rem;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+        .section-header i {
+            font-size: 1.75rem;
+            color: var(--success-color);
+            margin-right: 0.75rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+    .info-message {
+        display: flex;
+        align-items: flex-start;
+        padding: 1rem;
+        background-color: rgba(76, 201, 240, 0.1);
+        border-left: 4px solid var(--success-color);
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+    }
+
+        .info-message i {
+            font-size: 1.25rem;
+            color: var(--success-color);
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .info-message p {
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+    .trainers-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .trainer-card {
+        background-color: #fff;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .trainer-avatar {
+        background: var(--gradient);
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .trainer-avatar i {
+            font-size: 3rem;
+            color: white;
+        }
+
+    .trainer-info {
+        padding: 1.5rem;
+    }
+
+        .trainer-info h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+    .trainer-details {
+        margin-bottom: 1.25rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+        .detail-item i {
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .detail-item span {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+    .trainer-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1rem;
+        background-color: transparent;
+        color: var(--success-color);
+        border: 1px solid var(--success-color);
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+        .trainer-button i {
+            margin-right: 0.5rem;
+        }
+
+        .trainer-button:hover {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+    .no-trainers {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem;
+        background-color: #fff;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+    }
+
+        .no-trainers i {
+            font-size: 1.5rem;
+            color: var(--warning-color);
+            margin-right: 1rem;
+        }
+
+        .no-trainers p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+    /* Benefits Section */
+    .benefits-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+        .benefit-item i {
+            color: var(--primary-color);
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .register-button,
+    .login-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: var(--transition);
+        flex: 1;
+    }
+
+    .register-button {
+        background: var(--gradient);
+        color: white;
+    }
+
+    .login-button {
+        background-color: transparent;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+    }
+
+    .register-button:hover {
+        background: var(--primary-dark);
+    }
+
+    .login-button:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .register-button i,
+    .login-button i {
+        margin-right: 0.5rem;
+    }
+
+  
+    .welcome-card {
+        flex-direction: column;
+    }
+
+    .welcome-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function calculateResults() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const goal = document.getElementById('goal').value;
+
+            if (isNaN(height) || isNaN(weight)) {
+                alert('Unesite ispravne vrijednosti za visinu i težinu.');
+                return;
+            }
+
+            // Calculate BMI
+            const heightInMeters = height / 100;
+            const bmi = weight / (heightInMeters * heightInMeters);
+            const bmiFormatted = bmi.toFixed(1);
+
+            // Set BMI result without animation
+            const bmiResult = document.getElementById('bmi-result');
+            bmiResult.textContent = `Vaš BMI: ${bmiFormatted}`;
+            bmiResult.style.backgroundColor = '#e8f4fd';
+            bmiResult.style.borderLeft = '4px solid var(--primary-color)';
+
+            // Set BMI category
+            const bmiCategory = document.getElementById('bmi-category');
+            let category = '';
+            let categoryClass = '';
+
+            if (bmi < 18.5) {
+                category = 'Pothranjenost';
+                categoryClass = 'text-info';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = 'Normalna težina';
+                categoryClass = 'text-success';
+            } else if (bmi >= 25 && bmi < 30) {
+                category = 'Prekomjerna težina';
+                categoryClass = 'text-warning';
+            } else {
+                category = 'Gojaznost';
+                categoryClass = 'text-danger';
+            }
+
+            bmiCategory.innerHTML = `<span class="${categoryClass}">Kategorija: ${category}</span>`;
+
+            // Calculate basic caloric needs (using a simplified formula)
+            const baseCalories = 10 * weight + 6.25 * height - 5 * 30 + 5; // Assuming age 30, male
+
+            // Adjust based on goal
+            let adjustedCalories = baseCalories;
+            if (goal === 'lose') {
+                adjustedCalories = baseCalories - 500; // Deficit for weight loss
+            } else if (goal === 'gain') {
+                adjustedCalories = baseCalories + 500; // Surplus for weight gain
+            }
+
+            // Set calorie result without animation
+            const calorieResult = document.getElementById('calorie-result');
+            calorieResult.textContent = `Preporučeni dnevni unos kalorija: ${Math.round(adjustedCalories)} kcal`;
+            calorieResult.style.backgroundColor = '#e8f4fd';
+            calorieResult.style.borderLeft = '4px solid var(--primary-color)';
+        }
+    </script>
+}

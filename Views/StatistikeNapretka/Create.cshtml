@@ -1,0 +1,60 @@
+﻿@model OptiShape.Models.StatistikeNapretka
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var entry in ViewData.ModelState)
+            {
+                foreach (var error in entry.Value.Errors)
+                {
+                    <li><strong>@entry.Key</strong>: @error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+@{
+    ViewData["Title"] = "Kreiraj statistiku napretka";
+}
+
+<div class="container mt-5 mb-5">
+    <h1 class="text-center text-primary mb-4 fw-bold">📈 Nova statistika napretka</h1>
+    <form asp-action="Create" method="post" class="shadow-lg p-5 bg-white rounded-4 border">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="IdKorisnika" class="form-label">👤 Korisnik</label>
+            <select asp-for="IdKorisnika" class="form-select" asp-items="ViewBag.IdKorisnika"></select>
+            <span asp-validation-for="IdKorisnika" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Datum" class="form-label">📅 Datum</label>
+            <input asp-for="Datum" class="form-control" type="date" />
+            <span asp-validation-for="Datum" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Tezina" class="form-label">⚖️ Težina (kg)</label>
+            <input asp-for="Tezina" class="form-control" />
+            <span asp-validation-for="Tezina" class="text-danger small"></span>
+        </div>
+        <!-- BMI polje je uklonjeno -->
+        <div class="mb-3">
+            <label asp-for="KalorijskiUnos" class="form-label">🔥 Kalorijski unos</label>
+            <input asp-for="KalorijskiUnos" class="form-control" />
+            <span asp-validation-for="KalorijskiUnos" class="text-danger small"></span>
+        </div>
+        <div class="mt-4 d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-outline-secondary">← Nazad</a>
+            <button type="submit" class="btn btn-success">💾 Sačuvaj</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

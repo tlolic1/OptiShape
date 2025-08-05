@@ -1,0 +1,117 @@
+﻿@model OptiShape.Models.Korisnik
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var entry in ViewData.ModelState)
+            {
+                foreach (var error in entry.Value.Errors)
+                {
+                    <li><strong>@entry.Key</strong>: @error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+@{
+    ViewData["Title"] = "Kreiraj korisnika";
+}
+
+<div class="container mt-5 mb-5">
+    <h1 class="text-center text-primary mb-4 fw-bold">👤 Novi korisnik</h1>
+    <form asp-action="Create" method="post" class="shadow-lg p-5 bg-white rounded-4 border">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <!-- This hidden field tells the model binder to use null for IdTrenera -->
+        <input type="hidden" name="IdTrenera" value="" />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Ime" class="form-label">Ime korisnika</label>
+                <input asp-for="Ime" class="form-control" placeholder="Unesite ime" />
+                <span asp-validation-for="Ime" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Prezime" class="form-label">Prezime korisnika</label>
+                <input asp-for="Prezime" class="form-control" placeholder="Unesite prezime" />
+                <span asp-validation-for="Prezime" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Email" class="form-label">📧 Email adresa</label>
+                <input asp-for="Email" class="form-control" type="email" placeholder="ime@domena.com" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Sifra" class="form-label">🔒 Šifra</label>
+                <input asp-for="Sifra" class="form-control" type="password" placeholder="Minimalno 6 karaktera" />
+                <span asp-validation-for="Sifra" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="DatumRodjenja" class="form-label">📅 Datum rođenja</label>
+                <input asp-for="DatumRodjenja" class="form-control" type="date" />
+                <span asp-validation-for="DatumRodjenja" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="Visina" class="form-label">📏 Visina (cm)</label>
+                <input asp-for="Visina" class="form-control" type="number" step="0.1" min="100" max="250" />
+                <span asp-validation-for="Visina" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="Tezina" class="form-label">⚖️ Težina (kg)</label>
+                <input asp-for="Tezina" class="form-control" type="number" step="0.1" min="30" max="200" />
+                <span asp-validation-for="Tezina" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Spol" class="form-label">🧍 Spol</label>
+                <select asp-for="Spol" class="form-select" asp-items="Html.GetEnumSelectList<OptiShape.Models.Spol>()">
+                    <option value="">-- Odaberite spol --</option>
+                </select>
+                <span asp-validation-for="Spol" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Cilj" class="form-label">🎯 Cilj</label>
+                <select asp-for="Cilj" class="form-select" asp-items="Html.GetEnumSelectList<OptiShape.Models.Cilj>()">
+                    <option value="">-- Odaberite cilj --</option>
+                </select>
+                <span asp-validation-for="Cilj" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="form-check mt-2">
+                    <input class="form-check-input" asp-for="StudentskiStatus" type="checkbox" />
+                    <label class="form-check-label" asp-for="StudentskiStatus">🎓 Da li korisnik ima studentski status?</label>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="BrojTelefona" class="form-label">📱 Broj telefona</label>
+                <input asp-for="BrojTelefona" class="form-control" />
+                <span asp-validation-for="BrojTelefona" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-outline-secondary">← Nazad na listu</a>
+            <button type="submit" class="btn btn-primary">💾 Sačuvaj</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

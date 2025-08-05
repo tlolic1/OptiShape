@@ -1,0 +1,92 @@
+﻿@model IEnumerable<OptiShape.Models.PlanIshraneTreninga>
+
+@{
+    ViewData["Title"] = "Moj plan ishrane";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .user-plan-container {
+            background-color: #ffffff;
+            padding: 30px;
+            margin: 40px auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 700px;
+        }
+
+        h2 {
+            color: #1e3a8a;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .plan-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9fafb;
+        }
+
+            .plan-card h4 {
+                margin-bottom: 10px;
+                color: #0f172a;
+            }
+
+            .plan-card span {
+                display: block;
+                margin-bottom: 5px;
+                color: #475569;
+            }
+
+            .plan-card a.btn {
+                font-weight: 600;
+                border-radius: 8px;
+                transition: all 0.2s ease-in-out;
+            }
+
+                .plan-card a.btn:hover {
+                    background-color: #2563eb;
+                    color: #fff;
+                }
+
+    </style>
+}
+
+<div class="user-plan-container">
+    <h2>Vaši planovi ishrane i treninga</h2>
+
+    @if (!Model.Any())
+    {
+        <p>Niste još dodali nijedan plan.</p>
+    }
+    else
+    {
+        foreach (var plan in Model)
+        {
+            <div class="plan-card">
+                <h4>Plan od @plan.DatumKreiranja.ToString("dd.MM.yyyy")</h4>
+                <span><strong>Kalorije:</strong> @plan.Kalorije kcal</span>
+                <span><strong>Proteini:</strong> @plan.Protein g</span>
+                <span><strong>Ugljikohidrati:</strong> @plan.Ugljikohidrati g</span>
+                <span><strong>Masti:</strong> @plan.Masti g</span>
+
+                <a asp-controller="PlanIshraneITreninga"
+                   asp-action="PieChart"
+                   asp-route-id="@plan.IdPlana"
+                   class="btn btn-sm btn-outline-primary mt-3">
+                    Prikaži graf nutritivnih vrijednosti
+                </a>
+
+            </div>
+        }
+    }
+
+
+</div>

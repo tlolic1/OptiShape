@@ -1,0 +1,272 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registracija";
+    ViewData["FixedNavbar"] = false;
+}
+
+@section Styles {
+    <style>
+        .register-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+
+        .register-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px 60px;
+        }
+
+        .register-form {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 500px;
+        }
+
+            .register-form h2 {
+                font-weight: 700;
+                margin-bottom: 25px;
+                color: #1e3a8a;
+            }
+
+        .form-control,
+        select.form-control {
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+                transform: translateY(-1px);
+            }
+
+        .form-check-label {
+            font-weight: 500;
+        }
+
+        .form-step {
+            display: none;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+            .form-step.active {
+                display: block;
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+        .step-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .validation-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+            .validation-message.active {
+                display: block;
+            }
+    </style>
+}
+
+<h1 class="register-title">@ViewData["Title"]</h1>
+
+<div class="register-container">
+    <div class="register-form">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2>Kreirajte novi račun.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div id="step1" class="form-step active">
+                <div class="step-indicator" id="stepIndicator">Korak 1 od 2</div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Ime" class="form-control" autocomplete="ime" aria-required="true" />
+                    <label asp-for="Input.Ime"></label>
+                    <span asp-validation-for="Input.Ime" class="text-danger"></span>
+                    <div class="validation-message" data-for="Input.Ime">❗ Polje ne smije biti prazno</div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Prezime" class="form-control" autocomplete="prezime" aria-required="true" />
+                    <label asp-for="Input.Prezime"></label>
+                    <span asp-validation-for="Input.Prezime" class="text-danger"></span>
+                    <div class="validation-message" data-for="Input.Prezime">❗ Polje ne smije biti prazno</div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.DatumRodjenja" class="form-control" type="date" aria-required="true" />
+                    <label asp-for="Input.DatumRodjenja"></label>
+                    <span asp-validation-for="Input.DatumRodjenja" class="text-danger"></span>
+                    <div class="validation-message" data-for="Input.DatumRodjenja">❗ Polje ne smije biti prazno</div>
+                </div>
+
+                <button type="button" class="w-100 btn btn-lg btn-primary" onclick="validateAndNextStep(1)">Dalje</button>
+            </div>
+
+            <div id="step2" class="form-step">
+                <div class="step-indicator">Korak 2 od 2</div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Visina" class="form-control" aria-required="true" />
+                    <label asp-for="Input.Visina"></label>
+                    <span asp-validation-for="Input.Visina" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Tezina" class="form-control" aria-required="true" />
+                    <label asp-for="Input.Tezina"></label>
+                    <span asp-validation-for="Input.Tezina" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <select asp-for="Input.Spol" class="form-control" asp-items="Html.GetEnumSelectList<OptiShape.Models.Spol>()"></select>
+                    <label asp-for="Input.Spol"></label>
+                    <span asp-validation-for="Input.Spol" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <select asp-for="Input.Cilj" class="form-control" asp-items="Html.GetEnumSelectList<OptiShape.Models.Cilj>()"></select>
+                    <label asp-for="Input.Cilj"></label>
+                    <span asp-validation-for="Input.Cilj" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                    <label asp-for="Input.Email"></label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                    <label asp-for="Input.Password"></label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                    <label asp-for="Input.ConfirmPassword"></label>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.BrojTelefona" class="form-control" />
+                    <label asp-for="Input.BrojTelefona"></label>
+                    <span asp-validation-for="Input.BrojTelefona" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" onclick="showStep(1)">Nazad</button>
+                    <button type="submit" class="btn btn-primary">Registracija</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Lokalizirane poruke validacije
+        $.extend($.validator.messages, {
+            required: "Ovo polje je obavezno.",
+            number: "Unesite ispravan broj.",
+            date: "Unesite ispravan datum.",
+            dateISO: "Unesite ispravan datum.",
+            maxlength: $.validator.format("Najviše {0} karaktera."),
+            minlength: $.validator.format("Najmanje {0} karaktera."),
+            email: "Unesite ispravnu email adresu."
+        });
+
+        // Zamjeniti validaciju datuma s prilagođenom implementacijom
+        $.validator.addMethod(
+            "date",
+            function(value, element) {
+                if (this.optional(element)) {
+                    return true;
+                }
+
+                try {
+                    return !isNaN(new Date(value).getTime());
+                } catch (e) {
+                    return false;
+                }
+            },
+            "Unesite ispravan datum."
+        );
+
+        function showStep(stepNumber) {
+            const steps = document.querySelectorAll('.form-step');
+            steps.forEach(step => {
+                step.classList.remove('active');
+                step.style.display = 'none';
+            });
+
+            const nextStep = document.getElementById(`step${stepNumber}`);
+            nextStep.style.display = 'block';
+
+            // Trigeruj animaciju nakon što se DOM ažurira
+            setTimeout(() => {
+                nextStep.classList.add('active');
+            }, 20); // dovoljno za reflow
+
+            const indicator = document.getElementById("stepIndicator");
+            if (indicator) indicator.innerText = `Korak ${stepNumber} od 2`;
+        }
+
+        function validateAndNextStep(currentStep) {
+            const step = document.getElementById(`step${currentStep}`);
+            const inputs = step.querySelectorAll("input, select");
+            let isValid = true;
+
+            inputs.forEach(input => {
+                const message = step.querySelector(`.validation-message[data-for='${input.name}']`);
+                const mvcError = step.querySelector(`span[data-valmsg-for='${input.name}']`);
+
+                const isEmpty = input.hasAttribute("aria-required") && !input.value.trim();
+                const hasServerError = mvcError && mvcError.textContent.trim() !== "";
+
+                if (isEmpty && !hasServerError) {
+                    input.classList.add("is-invalid");
+                    if (message) message.classList.add("active");
+                    isValid = false;
+                } else {
+                    input.classList.remove("is-invalid");
+                    if (message) message.classList.remove("active");
+                }
+            });
+
+            if (isValid) {
+                showStep(currentStep + 1);
+            }
+        }
+    </script>
+}

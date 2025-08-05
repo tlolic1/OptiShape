@@ -1,0 +1,153 @@
+﻿@model OptiShape.Models.StatistikeNapretka
+
+@{
+    ViewData["Title"] = "Uredi statistiku napretka";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .edit-container {
+            background-color: #ffffff;
+            padding: 30px;
+            margin: 40px auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 700px;
+        }
+
+        h2 {
+            color: #1e3a8a;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #334155;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+            .form-control:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+                outline: none;
+            }
+
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+            .btn-secondary:hover {
+                background-color: #cbd5e1;
+            }
+
+        .text-danger {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .read-only {
+            background-color: #f1f5f9;
+            cursor: not-allowed;
+        }
+    </style>
+}
+
+<div class="edit-container">
+    <h2>Uredi statistiku napretka</h2>
+
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="IdZapisa" />
+
+        <div class="form-group">
+            <label asp-for="IdKorisnika" class="form-label">Korisnik</label>
+            <select asp-for="IdKorisnika" class="form-control" asp-items="ViewBag.IdKorisnika"></select>
+            <span asp-validation-for="IdKorisnika" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label asp-for="Datum" class="form-label">Datum unosa</label>
+                <input asp-for="Datum" class="form-control" type="date" />
+                <span asp-validation-for="Datum" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="Tezina" class="form-label">Težina (kg)</label>
+                <input asp-for="Tezina" class="form-control" />
+                <span asp-validation-for="Tezina" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label asp-for="Bmi" class="form-label">BMI</label>
+                <input asp-for="Bmi" class="form-control read-only" readonly />
+                <span class="text-muted small">* BMI se automatski izračunava na osnovu težine i visine korisnika</span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="KalorijskiUnos" class="form-label">Kalorijski unos</label>
+                <input asp-for="KalorijskiUnos" class="form-control" />
+                <span asp-validation-for="KalorijskiUnos" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Spremi</button>
+            <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

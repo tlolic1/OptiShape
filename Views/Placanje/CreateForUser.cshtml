@@ -1,0 +1,164 @@
+﻿@model OptiShape.Models.Placanje
+
+@{
+    ViewData["Title"] = "Plaćanje članarine";
+}
+
+<style>
+    .payment-container {
+        background-color: #ffffff;
+        padding: 30px;
+        margin: 40px auto;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        max-width: 600px;
+    }
+
+    .payment-title {
+        color: #1e3a8a;
+        font-weight: 700;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .payment-icon {
+        font-size: 3rem;
+        color: #f59e0b;
+        text-align: center;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .btn-pay {
+        background-color: #f59e0b;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-pay:hover {
+            background-color: #d97706;
+            color: white;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .btn-back {
+        background-color: #e2e8f0;
+        color: #1e293b;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 25px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .btn-back:hover {
+            background-color: #cbd5e1;
+        }
+
+    .payment-note {
+        font-size: 0.85rem;
+        color: #64748b;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .price-info {
+        background-color: @(ViewBag.IsStudent ? "#dbeafe" : "#fff7ed");
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .price-amount {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: @(ViewBag.IsStudent ? "#1d4ed8" : "#fb923c");
+        margin-bottom: 5px;
+    }
+
+    .price-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        background-color: @(ViewBag.IsStudent ? "#1d4ed8" : "#fb923c");
+        color: white;
+    }
+</style>
+
+<div class="payment-container">
+    <i class="bi bi-credit-card payment-icon"></i>
+    <h2 class="payment-title">Plaćanje mjesečne članarine</h2>
+
+    <div class="price-info">
+        <div class="price-amount">@(ViewBag.IsStudent ? "7 KM" : "10 KM") mjesečno</div>
+        @if (ViewBag.IsStudent)
+        {
+            <span class="price-badge">Studentski popust primijenjen</span>
+        }
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach (var entry in ViewData.ModelState)
+                {
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        <li><strong>@entry.Key</strong>: @error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+    <form asp-action="CreateForUser" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row">
+            <div class="col-12 form-group">
+                <label asp-for="DatumPlacanja" class="form-label">📅 Datum plaćanja</label>
+                <input asp-for="DatumPlacanja" class="form-control" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+                <span asp-validation-for="DatumPlacanja" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NacinPlacanja" class="form-label">💳 Način plaćanja</label>
+            <select asp-for="NacinPlacanja" class="form-select">
+                <option value="KARTICA">Kartica</option>
+                <option value="GOTOVINA">Gotovina</option>
+            </select>
+            <span asp-validation-for="NacinPlacanja" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="/Home/Dashboard" class="btn btn-back">
+                <i class="bi bi-arrow-left me-1"></i> Nazad
+            </a>
+            <button type="submit" class="btn btn-pay">
+                <i class="bi bi-cash-coin me-2"></i> Izvrši plaćanje
+            </button>
+        </div>
+    </form>
+
+    <div class="payment-note mt-4">
+        <p>Napomena: Iznos članarine je automatski postavljen na osnovu vašeg statusa.</p>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

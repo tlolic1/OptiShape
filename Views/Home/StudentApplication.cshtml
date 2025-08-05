@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Studentska aplikacija";
+    ViewData["FixedNavbar"] = true;
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card border-primary shadow-sm mb-4 mt-5">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-mortarboard-fill me-2"></i>
+                        Apliciranje za studentski status
+                    </h3>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <i class="bi bi-exclamation-circle-fill me-2"></i>
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        Kao student ostvarujete pravo na posebne pogodnosti i popuste unutar OptiShape sistema.
+                    </div>
+
+                    <h5 class="card-title mt-4">Kako aplicirati?</h5>
+                    <p class="card-text">
+                        Da biste aplicirali za studentski status potrebno je da na poslani zahtjev
+                        odgovorite tako što ćete unijeti podatke o Vašem fakultetu, Vaš broj indeksa i
+                        godinu studija te uz to priložite dokaz unesenih informacija.
+                    </p>
+
+                    <h5 class="card-title mt-4">Dokaz može biti:</h5>
+                    <ul>
+                        <li>Prva stranica Vašeg indeksa</li>
+                        <li>Potvrda o upisu sa fakulteta (za tekući semestar)</li>
+                    </ul>
+
+                    <p class="mt-4">
+                        Kliknite na dugme ispod da pošaljete zahtjev za studentski status.
+                    </p>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                        <form method="post" asp-controller="Home" asp-action="SendStudentRequest" enctype="multipart/form-data" class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                            <input type="hidden" name="Ime" value="@User.Identity.Name" />
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-envelope-fill me-2"></i>
+                                Pošalji zahtjev putem e-maila
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Odgovor na zahtjev ćete dobiti u roku od 2-3 radna dana.</small>
+                        <a asp-controller="Home" asp-action="Dashboard" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Nazad na dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

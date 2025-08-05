@@ -1,0 +1,122 @@
+﻿@model OptiShape.Models.PlanIshraneTreninga
+
+@{
+    ViewData["Title"] = "Detalji plana";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .details-container {
+            background-color: #ffffff;
+            padding: 30px;
+            margin: 40px auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+        }
+
+        h2 {
+            color: #1e3a8a;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .details-row {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .details-label {
+            width: 40%;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .details-value {
+            width: 60%;
+            color: #1e293b;
+        }
+
+            .details-value.korisnik {
+                font-weight: 700;
+            }
+
+        .btn-group {
+            margin-top: 30px;
+        }
+
+        .btn-primary, .btn-secondary {
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 10px 18px;
+            margin-right: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+            .btn-secondary:hover {
+                background-color: #cbd5e1;
+            }
+    </style>
+}
+
+<div class="details-container">
+    <h2>Detalji plana ishrane i treninga</h2>
+
+    <div class="details-row">
+        <div class="details-label">Korisnik:</div>
+        <div class="details-value korisnik">@Model.Korisnik?.Ime @Model.Korisnik?.Prezime</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Datum kreiranja:</div>
+        <div class="details-value">@Model.DatumKreiranja.ToString("dd.MM.yyyy")</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Kalorije:</div>
+        <div class="details-value">@Model.Kalorije</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Proteini (g):</div>
+        <div class="details-value">@Model.Protein</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Ugljikohidrati (g):</div>
+        <div class="details-value">@Model.Ugljikohidrati</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Masti (g):</div>
+        <div class="details-value">@Model.Masti</div>
+    </div>
+
+    <div class="btn-group">
+        <a asp-action="Edit" asp-route-id="@Model?.IdPlana" class="btn btn-primary">Uredi</a>
+        <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
+    </div>
+
+
+</div>

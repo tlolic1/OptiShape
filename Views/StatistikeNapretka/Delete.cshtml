@@ -1,0 +1,137 @@
+﻿@model OptiShape.Models.StatistikeNapretka
+
+@{
+    ViewData["Title"] = "Brisanje statistike napretka";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .delete-container {
+            background-color: #ffffff;
+            padding: 30px;
+            margin: 40px auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+        }
+
+        h2 {
+            color: #dc2626;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .warning-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: #b91c1c;
+        }
+
+        .details-row {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .details-label {
+            width: 40%;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .details-value {
+            width: 60%;
+            color: #1e293b;
+        }
+
+            .details-value.korisnik {
+                font-weight: 700;
+            }
+
+        .btn-group {
+            margin-top: 30px;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+
+            .btn-danger:hover {
+                background-color: #dc2626;
+            }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-left: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-secondary:hover {
+                background-color: #cbd5e1;
+            }
+    </style>
+}
+
+<div class="delete-container">
+    <h2>Brisanje statistike napretka</h2>
+
+    <div class="warning-text">Da li ste sigurni da želite obrisati ovu statistiku napretka?</div>
+
+    <div class="details-row">
+        <div class="details-label">Korisnik:</div>
+        <div class="details-value korisnik">
+            @if (Model.Korisnik != null)
+            {
+                @(Model.Korisnik.Ime + " " + Model.Korisnik.Prezime)
+            }
+            else
+            {
+                <span class="text-danger">Korisnik nije pronađen</span>
+            }
+        </div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Datum unosa:</div>
+        <div class="details-value">@Model.Datum.ToString("dd.MM.yyyy")</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Težina (kg):</div>
+        <div class="details-value">@Model.Tezina</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">BMI:</div>
+        <div class="details-value">@Model.Bmi</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Kalorijski unos:</div>
+        <div class="details-value">@Model.KalorijskiUnos</div>
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="IdZapisa" />
+        <div class="btn-group">
+            <input type="submit" value="Obriši" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
+        </div>
+    </form>
+</div>

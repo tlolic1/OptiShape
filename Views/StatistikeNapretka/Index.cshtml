@@ -1,0 +1,396 @@
+﻿@model IEnumerable<OptiShape.Models.StatistikeNapretka>
+
+@{
+    ViewData["Title"] = "Statistike napretka";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8fafc;
+        }
+
+        .card-custom {
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            background-color: #ffffff;
+            padding: 30px;
+            margin: 20px auto;
+            width: 95%;
+            overflow-x: auto;
+        }
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+            .table th {
+                background-color: #e0f2fe;
+                color: #1e3a8a;
+                font-weight: 700;
+                padding: 14px;
+                text-align: left;
+                font-size: 0.95rem;
+            }
+
+            .table td {
+                background-color: #f9fafb;
+                padding: 14px;
+                border-top: 1px solid #e2e8f0;
+                vertical-align: middle;
+                font-size: 0.95rem;
+            }
+
+        .table-hover tbody tr:hover td {
+            background-color: #f0f9ff !important;
+            transition: background-color 0.3s ease;
+        }
+
+        .table td:first-child {
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .table td, .table th {
+            border-right: 1px solid #e2e8f0;
+        }
+
+            .table th:last-child, .table td:last-child {
+                border-right: none;
+            }
+
+        .btn-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+            .btn-group .btn {
+                border-radius: 12px;
+                font-weight: 600;
+                padding: 8px 14px;
+                color: #fff;
+                border: none;
+                transition: 0.2s ease-in-out;
+            }
+
+        .btn-edit {
+            background-color: #3b82f6;
+        }
+
+            .btn-edit:hover {
+                background-color: #2563eb;
+            }
+
+        .btn-details {
+            background-color: #0ea5e9;
+        }
+
+            .btn-details:hover {
+                background-color: #0284c7;
+            }
+
+        .btn-delete {
+            background-color: #ef4444;
+        }
+
+            .btn-delete:hover {
+                background-color: #dc2626;
+            }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 30px auto 10px;
+            width: 95%;
+        }
+
+            .page-title h1 {
+                font-size: 2rem;
+                font-weight: 800;
+                color: #1e3a8a;
+            }
+
+            .page-title .btn-primary {
+                background-color: #2563eb;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                padding: 10px 20px;
+            }
+
+                .page-title .btn-primary:hover {
+                    background-color: #1d4ed8;
+                }
+
+        .animated-btn {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.1);
+        }
+
+            .animated-btn:hover {
+                background-color: #0dcaf0 !important;
+                color: white;
+                transform: scale(1.03);
+                box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+            }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: 0.1s;
+        }
+
+        /* Trener specific styles */
+        .user-boxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            width: 180px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            .user-box:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                border-color: #3b82f6;
+            }
+
+            .user-box.active {
+                background-color: #e0f2fe;
+                border-color: #3b82f6;
+                box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+            }
+
+        .user-initials {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #e0f2fe;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 10px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+
+        .user-stats {
+            display: none;
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+
+        @@keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+}
+
+<div class="page-title">
+    <h1><i class="bi bi-graph-up-arrow me-2"></i> Statistike napretka</h1>
+
+    @if (User.IsInRole("Administrator"))
+    {
+        <a asp-action="Create" class="btn btn-primary">+ Kreiraj novu</a>
+    }
+    else if (User.IsInRole("Korisnik"))
+    {
+        <a asp-action="CreateForUser" class="btn btn-primary">+ Dodaj statistiku</a>
+    }
+</div>
+
+@if (User.IsInRole("Trener"))
+{
+    <div class="card-custom">
+        <h4 class="mb-3 text-primary">Odaberite korisnika:</h4>
+        <div class="user-boxes">
+            @{
+                // Group statistics by user
+                var userGroups = Model.GroupBy(s => s.Korisnik?.IdKorisnika).Where(g => g.Key != null);
+
+                foreach (var userGroup in userGroups)
+                {
+                    var user = userGroup.First().Korisnik;
+                    if (user != null)
+                    {
+                        <div class="user-box" data-user-id="@user.IdKorisnika" onclick="showUserStats(@user.IdKorisnika)">
+                            <div class="user-initials">
+                                @(user.Ime?.Substring(0, 1))@(user.Prezime?.Substring(0, 1))
+                            </div>
+                            <div class="user-name">@($"{user.Ime} {user.Prezime}")</div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+
+        <div id="userStatsContainer" class="mt-4 user-stats">
+            <!-- User statistics will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        function showUserStats(userId) {
+            // Update active state for user boxes
+            document.querySelectorAll('.user-box').forEach(box => {
+                box.classList.remove('active');
+            });
+            document.querySelector(`.user-box[data-user-id="${userId}"]`).classList.add('active');
+
+            // Get user statistics
+            const userStats = @Html.Raw(Json.Serialize(Model));
+            const filteredStats = userStats.filter(stat => stat.korisnik && stat.korisnik.idKorisnika === userId);
+
+            // Sort by date (newest first)
+            filteredStats.sort((a, b) => new Date(b.datum) - new Date(a.datum));
+
+            // Generate HTML for the table
+            let html = `
+                <h4 class="mb-3">Statistike korisnika</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Težina</th>
+                                <th class="d-none d-md-table-cell">BMI</th>
+                                <th>Kalorijski unos</th>
+                                <th>Akcije</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            filteredStats.forEach(stat => {
+                const date = new Date(stat.datum).toLocaleDateString('hr-HR');
+                html += `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${stat.tezina}</td>
+                        <td class="d-none d-md-table-cell">${stat.bmi}</td>
+                        <td>${stat.kalorijskiUnos}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="/StatistikeNapretka/Details/${stat.idZapisa}" class="btn btn-details">Detalji</a>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            // Display the statistics
+            const container = document.getElementById('userStatsContainer');
+            container.innerHTML = html;
+            container.style.display = 'block';
+        }
+    </script>
+}
+else
+{
+    <div class="card-custom">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Korisnik</th>
+                        <th>@Html.DisplayNameFor(model => model.First().Datum)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().Tezina)</th>
+                        <th class="d-none d-md-table-cell">@Html.DisplayNameFor(model => model.First().Bmi)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().KalorijskiUnos)</th>
+                        <th>Akcije</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (item.Korisnik != null)
+                                {
+                                    @($"{item.Korisnik.Ime} {item.Korisnik.Prezime}")
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Nepoznat</span>
+                                }
+                            </td>
+                            <td>@item.Datum.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Tezina</td>
+                            <td class="d-none d-md-table-cell">@item.Bmi</td>
+                            <td>@item.KalorijskiUnos</td>
+                            <td>
+                                <div class="btn-group">
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.IdZapisa" class="btn btn-edit">Uredi</a>
+                                    }
+
+                                    <a asp-action="Details" asp-route-id="@item.IdZapisa" class="btn btn-details">Detalji</a>
+
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <a asp-action="Delete" asp-route-id="@item.IdZapisa" class="btn btn-delete">Obriši</a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole("Korisnik"))
+{
+    <div class="card-custom mt-4 fade-in-up">
+        <h3 class="text-center mb-3 text-primary fw-bold">
+            <i class="bi bi-emoji-smile-upside-down me-2"></i> Pogledaj svoj napredak vizuelno!
+        </h3>
+        <p class="text-center text-muted mb-4">
+            Prati promjene svoje težine, BMI i kalorijskog unosa kroz vrijeme uz grafički prikaz.
+        </p>
+        <div class="text-center">
+            <a asp-action="Graf" class="btn btn-lg btn-outline-info px-4 py-2 fw-semibold animated-btn">
+                <i class="bi bi-bar-chart-line-fill me-2"></i> Prikaži graf
+            </a>
+        </div>
+    </div>
+}

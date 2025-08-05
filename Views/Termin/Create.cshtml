@@ -1,0 +1,121 @@
+﻿@model OptiShape.Models.Termin
+
+@{
+    ViewData["Title"] = "Kreiraj termin";
+}
+
+<style>
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s ease-out forwards;
+    }
+
+    @@keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .input-icon {
+        position: relative;
+    }
+
+    .btn-click-effect {
+        transition: transform 0.15s ease;
+    }
+
+        .btn-click-effect:active {
+            transform: scale(0.95);
+        }
+
+    .readonly-disabled {
+        cursor: not-allowed;
+        background-color: #f1f5f9; /* svijetlosiva pozadina */
+        pointer-events: none; /* blokira klikove */
+    }
+
+</style>
+
+<div class="container mt-5 mb-5 fade-in">
+    <h1 class="text-center text-primary mb-4 fw-bold">📅 Novi termin</h1>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var entry in ViewData.ModelState)
+                {
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        <li><strong>@entry.Key</strong>: @error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+    <form asp-action="Create" method="post" class="shadow-lg p-5 bg-white rounded-4 border">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row g-3">
+            <div class="col-12 input-icon">
+                <label asp-for="IdKorisnika" class="form-label">👤 Korisnik</label>
+                <select asp-for="IdKorisnika" class="form-select" asp-items="ViewBag.Korisnici"></select>
+                <span asp-validation-for="IdKorisnika" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6 input-icon">
+                <label asp-for="Datum" class="form-label">📅 Datum termina</label>
+                <input asp-for="Datum" class="form-control" type="date" />
+                <span asp-validation-for="Datum" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-3 input-icon">
+                <label asp-for="VrijemeOd" class="form-label">🕒 Vrijeme početka</label>
+                <input asp-for="VrijemeOd" class="form-control" type="time" id="vrijemeOd" />
+
+                <span asp-validation-for="VrijemeOd" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-3 input-icon">
+                <label class="form-label">🕒 Vrijeme završetka</label>
+                @{
+                    var vrijemeDo = (Model != null ? Model.VrijemeOd.Add(TimeSpan.FromHours(1)) : TimeSpan.FromHours(1));
+                }
+                <input class="form-control readonly-disabled" type="time" id="vrijemeDo" readonly />
+
+
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-click-effect">← Nazad</a>
+            <button type="submit" class="btn btn-success btn-click-effect">💾 Sačuvaj</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<script>
+    document.getElementById("vrijemeOd").addEventListener("change", function () {
+        const inputVrijeme = this.value;
+        if (inputVrijeme) {
+            const [sat, minuta] = inputVrijeme.split(":").map(Number);
+            let noviSat = (sat + 1) % 24;
+            let vrijemeDo = `${noviSat.toString().padStart(2, '0')}:${minuta.toString().padStart(2, '0')}`;
+            document.getElementById("vrijemeDo").value = vrijemeDo;
+        } else {
+            document.getElementById("vrijemeDo").value = "";
+        }
+    });
+</script>
+

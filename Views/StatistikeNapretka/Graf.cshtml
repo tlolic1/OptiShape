@@ -1,0 +1,149 @@
+﻿@model List<OptiShape.Models.StatistikeNapretka>
+
+@{
+    ViewData["Title"] = "Grafovi napretka";
+    var datumi = Model.Select(x => x.Datum.ToString("dd.MM")).ToList();
+    var tezine = Model.Select(x => x.Tezina).ToList();
+    var bmi = Model.Select(x => x.Bmi).ToList();
+    var kalorije = Model.Select(x => x.KalorijskiUnos).ToList();
+}
+
+@section Styles {
+    <style>
+        .graf-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 15px;
+        }
+
+        .graf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .graf-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .graf-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .graf-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: center;
+            color: #1f2937;
+        }
+
+        canvas {
+            height: 220px !important;
+        }
+
+        .no-data {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 1.1rem;
+            color: #6b7280;
+        }
+    </style>
+}
+
+<div class="graf-wrapper">
+    <h2 class="text-center mb-4">
+        <i class="bi bi-bar-chart-line me-2"></i>Pregled napretka kroz vrijeme
+    </h2>
+
+    @if (!Model.Any())
+    {
+        <div class="no-data">
+            <i class="bi bi-emoji-frown me-2"></i>
+            Još nema statistika za prikaz grafikona.
+        </div>
+    }
+    else
+    {
+        <div class="graf-grid">
+            <div class="graf-card">
+                <div class="graf-title">Težina (kg)</div>
+                <canvas id="grafTezina"></canvas>
+            </div>
+            <div class="graf-card">
+                <div class="graf-title">BMI</div>
+                <canvas id="grafBMI"></canvas>
+            </div>
+            <div class="graf-card">
+                <div class="graf-title">Kalorijski unos</div>
+                <canvas id="grafKalorije"></canvas>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    @if (Model.Any())
+    {
+        <script>
+            const datumi = @Html.Raw(Json.Serialize(datumi));
+
+            const baseOptions = (label, data, borderColor) => ({
+                type: 'line',
+                data: {
+                    labels: datumi,
+                    datasets: [{
+                        label,
+                        data,
+                        borderColor,
+                        backgroundColor: borderColor + "33",
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                maxTicksLimit: 6
+                            },
+                            grid: { display: false }
+                        },
+                        y: {
+                            ticks: {
+                                maxTicksLimit: 4
+                            },
+                            grid: {
+                                color: '#f3f4f6'
+                            }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById("grafTezina"), baseOptions("Težina", @Html.Raw(Json.Serialize(tezine)), "#3b82f6"));
+            new Chart(document.getElementById("grafBMI"), baseOptions("BMI", @Html.Raw(Json.Serialize(bmi)), "#ec4899"));
+            new Chart(document.getElementById("grafKalorije"), baseOptions("Kalorijski unos", @Html.Raw(Json.Serialize(kalorije)), "#10b981"));
+        </script>
+    }
+}

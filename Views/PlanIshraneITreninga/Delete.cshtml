@@ -1,0 +1,133 @@
+﻿@model OptiShape.Models.PlanIshraneTreninga
+
+@{
+    ViewData["Title"] = "Brisanje plana";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .delete-container {
+            background-color: #ffffff;
+            padding: 30px;
+            margin: 40px auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+        }
+
+        h2 {
+            color: #dc2626;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .warning-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: #b91c1c;
+        }
+
+        .details-row {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .details-label {
+            width: 40%;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .details-value {
+            width: 60%;
+            color: #1e293b;
+        }
+
+            .details-value.korisnik {
+                font-weight: 700;
+            }
+
+        .btn-group {
+            margin-top: 30px;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+
+            .btn-danger:hover {
+                background-color: #dc2626;
+            }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-left: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-secondary:hover {
+                background-color: #cbd5e1;
+            }
+    </style>
+}
+
+<div class="delete-container">
+    <h2>Brisanje plana</h2>
+
+    <div class="warning-text">Da li ste sigurni da želite obrisati ovaj plan?</div>
+
+    <div class="details-row">
+        <div class="details-label">Korisnik:</div>
+        <div class="details-value korisnik">@Model.Korisnik?.Ime @Model.Korisnik?.Prezime</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Datum kreiranja:</div>
+        <div class="details-value">@Model.DatumKreiranja.ToString("dd.MM.yyyy")</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Kalorije:</div>
+        <div class="details-value">@Model.Kalorije</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Proteini (g):</div>
+        <div class="details-value">@Model.Protein</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Ugljikohidrati (g):</div>
+        <div class="details-value">@Model.Ugljikohidrati</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Masti (g):</div>
+        <div class="details-value">@Model.Masti</div>
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="IdPlana" />
+        <div class="btn-group">
+            <input type="submit" value="Obriši" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
+        </div>
+    </form>
+</div>

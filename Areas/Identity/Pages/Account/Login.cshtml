@@ -1,0 +1,137 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Prijava";
+}
+
+<!-- stil za login -->
+
+<style>
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        padding: 60px 20px;
+    }
+
+    .login-form {
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 450px;
+    }
+
+        .login-form h2 {
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #1e3a8a;
+        }
+
+        .login-form .btn-primary {
+            background-color: #2563eb;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+        }
+
+            .login-form .btn-primary:hover {
+                background-color: #1d4ed8;
+                transform: translateY(-1px);
+            }
+
+    .separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #6c757d;
+    }
+
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .separator::before {
+            margin-right: .5em;
+        }
+
+        .separator::after {
+            margin-left: .5em;
+        }
+
+    .btn-guest {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        color: #495057;
+        transition: all 0.3s ease;
+    }
+
+        .btn-guest:hover {
+            background-color: #e9ecef;
+            border-color: #ced4da;
+            color: #212529;
+        }
+
+        .btn-guest i {
+            opacity: 0.7;
+        }
+</style>
+
+<style>
+    .login-title {
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 800;
+        color: #1e3a8a;
+        margin-top: 40px;
+        margin-bottom: 30px;
+        letter-spacing: -1px;
+    }
+</style>
+
+<h1 class="login-title">@ViewData["Title"]</h1>
+
+<div class="login-container">
+    <div class="login-form">
+        <form id="account" method="post">
+            <h2>Koristite lokalni račun za prijavu.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="ime@primjer.com" />
+                <label asp-for="Input.Email">Email</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="lozinka" />
+                <label asp-for="Input.Password">Šifra</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="checkbox mb-3">
+                <label asp-for="Input.RememberMe" class="form-label">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+            </div>
+            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary mb-3">Prijavi se</button>
+
+            <div class="text-center">
+                <div class="separator my-3">ili</div>
+                <a href="/Home/GuestDashboard" class="btn btn-lg btn-guest w-100">
+                    <i class="bi bi-person me-2"></i> Nastavi kao gost
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

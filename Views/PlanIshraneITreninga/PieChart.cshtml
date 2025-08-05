@@ -1,0 +1,122 @@
+﻿@model OptiShape.Models.PlanIshraneTreninga
+
+@{
+    ViewData["Title"] = "Makronutrijenti (Pie Chart)";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .pie-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #e0f2fe, #fef3c7);
+        }
+
+        .pie-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .pie-card:hover {
+                transform: translateY(-6px) scale(1.025);
+                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+            }
+
+
+
+        .pie-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: #1e40af;
+        }
+
+        canvas {
+            max-height: 320px;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+    </style>
+}
+
+<div class="pie-container">
+    <div class="pie-card">
+        <div class="pie-title">
+            Makronutrijenti za plan od @Model.DatumKreiranja.ToString("dd.MM.yyyy")
+        </div>
+
+        <canvas id="pieChart"></canvas>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Proteini', 'Ugljikohidrati', 'Masti'],
+                datasets: [{
+                    data: [@Model.Protein, @Model.Ugljikohidrati, @Model.Masti],
+                    backgroundColor: [
+                        '#3b82f6', // plava
+                        '#22c55e', // svijetlozelena
+                        '#f97316'  // narandžasta
+                    ],
+                    borderColor: '#f3f4f6',
+                    borderWidth: 4,
+                    hoverOffset: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    duration: 1200,
+                    easing: 'easeOutBack'
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 15,
+                                weight: '600'
+                            },
+                            color: '#1f2937',
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleFont: { size: 14, weight: '600' },
+                        bodyFont: { size: 13 },
+                        bodyColor: '#f9fafb',
+                        borderWidth: 1,
+                        borderColor: '#cbd5e1'
+                    }
+                }
+            }
+        });
+    </script>
+}

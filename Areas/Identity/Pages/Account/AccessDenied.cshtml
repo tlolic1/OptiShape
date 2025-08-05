@@ -1,0 +1,34 @@
+﻿@page
+@model Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal.AccessDeniedModel
+@{
+    ViewData["Title"] = "Pristup odbijen";
+}
+
+<style>
+    .centered-access-denied {
+        min-height: 60vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+        .centered-access-denied h1 {
+            font-size: 2.5rem;
+            color: #dc2626;
+            margin-bottom: 1rem;
+        }
+
+        .centered-access-denied p {
+            font-size: 1.2rem;
+            color: #334155;
+        }
+</style>
+
+<div class="centered-access-denied">
+    <h1>⛔ Pristup odbijen</h1>
+    <p>Nemate dozvolu za pristup ovoj stranici ili resursu.</p>
+    <p>Molimo kontaktirajte administratora ako mislite da je ovo greška.</p>
+    <a href="/Home/Dashboard" class="btn btn-primary mt-3">Dashboard</a>
+</div>

@@ -1,0 +1,471 @@
+﻿@{
+    ViewData["Title"] = "Početna";
+    ViewData["FixedNavbar"] = true;
+}
+
+<section style="
+    background-image: url('/images/parallax.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 900px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+">
+
+    <div class="fade-in" style="max-width: 800px; margin-top: -100px;">
+
+        <h1 style="font-size: 4rem; font-weight: 800; margin-bottom: 20px;">
+            <span style="color:white">Dobrodošli na </span> <span style="color:#60a5fa;">OptiShape!</span>
+        </h1>
+        <p style="font-size: 1.2rem; margin-bottom: 30px;">
+            OptiShape je Vaš pametni partner za ostvarenje zdravstvenih i fitness ciljeva. <br />
+            Povezujemo lične podatke sa stručnim smjernicama kako biste donosili bolje odluke – svaki dan.
+        </p>
+        <a href="javascript:void(0)" class="btn btn-primary" onclick="prikaziSadrzaj()" style="
+    background-color: white;
+    color: #2563eb;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+">
+            Započni!
+        </a>
+
+    </div>
+</section>
+
+<div class="spacer"></div>
+
+<!-- SADRŽAJ -->
+<div id="sadrzaj">
+
+    <!-- O NAMA -->
+    <section id="opis" class="fade-in-left">
+        <div class="opis-container">
+            <div class="opis-icon">💡</div>
+            <h2>O OptiShape</h2>
+            <p>
+                <strong>OptiShape</strong> je integrisani sistem dizajniran da podrži <em>personalizirani fitness pristup</em> i unaprijedi Vaše zdravlje.
+                Omogućava unos osnovnih podataka poput težine, visine i godina kako bi se izračunao <strong>BMI</strong> i kreirale preporuke.
+                Povezujemo korisnike sa stručnim savjetima personalnih trenera, vodeći vas korak po korak ka zdravijem načinu života.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- ZAPOCNI -->
+    <section id="benefiti" class="fade-in-right">
+        <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 40px;">Kako započeti?</h2>
+        <div class="benefiti-grid">
+            <div>
+                <span class="step-number">1</span>
+                <h4>📝 Registruj se</h4>
+                <p>Kreiraj svoj profil i unesi osnovne podatke.</p>
+            </div>
+            <div>
+                <span class="step-number">2</span>
+                <h4>🎯 Postavi ciljeve</h4>
+                <p>Definiši željenu težinu i cilj.</p>
+            </div>
+            <div>
+                <span class="step-number">3</span>
+                <h4>💪 Prati napredak</h4>
+                <p>Aplikacija ti automatski predlaže planove i prati rezultate.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="spacer2"></div>
+
+    <!-- CTA -->
+    <section id="cta">
+        <div class="cta-content">
+            <h2><span class="emoji">🚀</span> <span class="text-glow">Spremni za početak?</span></h2>
+
+            <p>Registruj se besplatno i napravi svoj prvi personalizovani plan!</p>
+            <a href="/Identity/Account/Register" class="cta-btn">Registruj se</a>
+            <p class="cta-login">
+                Već imaš račun?
+                <a href="/Identity/Account/Login">Prijavi se</a>.
+            </p>
+            
+        </div>
+        
+    </section>
+
+    
+
+    <div class="spacer3"></div>
+
+    
+
+
+
+</div>
+
+<!-- STIL CSS -->
+<style>
+
+
+    /* SPACERI */
+    .spacer {
+        height: 100px;
+    }
+
+
+    .spacer2 {
+        height: 100px;
+    }
+
+    .spacer3 {
+        height: 200px;
+    }
+
+    html, body {
+        overflow-x: hidden;
+    }
+
+    
+    #opis, #benefiti {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        text-align: center;
+    }
+
+   
+    /* ZA ZAPOCNI */
+    .benefiti-grid {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        gap: 30px;
+        flex-wrap: wrap;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .benefiti-grid > div {
+        background-color: #ffffff;
+        padding: 30px 20px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        width: 280px;
+        min-width: 260px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+    }
+
+        .benefiti-grid > div:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .step-number {
+        display: inline-block;
+        width: 42px;
+        height: 42px;
+        line-height: 42px;
+        background-color: #60a5fa;
+        color: white;
+        font-weight: 600;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+
+
+
+    /*ANIMACIJE*/
+    #opis, #benefiti, #cta {
+        scroll-margin-top: 150px;
+    }
+
+    .fade-in-left,
+    .fade-in-right {
+        opacity: 0;
+        transition: all 2s ease;
+    }
+
+    .fade-in-left {
+        transform: translateX(-60px);
+    }
+
+    .fade-in-right {
+        transform: translateX(60px);
+    }
+
+        .fade-in-left.show,
+        .fade-in-right.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+
+
+    /*OPIS*/
+
+    #opis {
+    font-family: 'Georgia', serif; /* primjer: elegantni serif font */
+}
+
+
+
+
+
+    .opis-container {
+        background-color: #f8fafc;
+        padding: 50px 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        max-width: 850px;
+        margin: 0 auto;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+        .opis-container:hover {
+            transform: translateY(-4px);
+        }
+
+    .opis-icon {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        color: #60a5fa;
+    }
+
+    #opis h2 {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 2.4rem;
+        color: #1e3a8a;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+        #opis h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #60a5fa;
+            margin: 12px auto 0;
+            border-radius: 2px;
+        }
+
+    #opis p {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #334155;
+        margin-top: 20px;
+    }
+
+
+    /* CTA (CALL TO ACTION)*/
+
+    #cta {
+        background: linear-gradient(135deg, #4f46e5, #3b82f6); /* ljubičasta → plava */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 120px 20px;
+        color: white;
+        text-align: center;
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+
+        #cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1), transparent 60%);
+            animation: pulse 6s infinite ease-in-out;
+            z-index: 0;
+        }
+
+    
+
+
+
+    .cta-content {
+        max-width: 800px;
+        margin: 0 auto;
+        animation: fadeIn 1.5s ease-in-out;
+        position: relative; /* OBAVEZNO */
+        z-index: 1; /* Daje prednost u slojevima */
+    }
+
+
+    #cta h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    #cta p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+    #cta h2, #cta p {
+        color: #e0f2fe;
+    }
+
+    .cta-btn {
+        display: inline-block;
+        background-color: white;
+        color: #2563eb;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+        .cta-btn:hover {
+            background-color: #2563eb;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .cta-btn {
+        background-color: white;
+        color: #2563eb;
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(96, 165, 250, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+            z-index: 0;
+        }
+
+        .cta-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-btn:hover {
+            color: white;
+            background-color: #2563eb;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4);
+        }
+
+    .text-glow {
+        color: #fff;
+        text-shadow: 0 0 10px #93c5fd, 0 0 20px #60a5fa;
+    }
+
+
+    /*ZA POSTOJECI RACUN (ISPOD CTA)*/
+
+    .cta-login {
+        margin-top: 20px;
+        font-size: 1rem;
+        color: #e0f2fe;
+    }
+
+        .cta-login a {
+            color: #fcd34d;
+            font-weight: 600;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+            .cta-login a:hover {
+                color: #fff;
+            }
+
+
+
+</style>
+
+
+
+
+<!-- SKRIPTE -->
+<script>
+    function prikaziSadrzaj() {
+        const cta = document.getElementById("cta");
+        if (cta) {
+            cta.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+        const observerOptions = {
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const targets = document.querySelectorAll('.fade-in-left, .fade-in-right');
+
+        targets.forEach(el => {
+            observer.observe(el);
+
+            // fallback ako su već u viewportu
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                el.classList.add('show');
+            }
+        });
+    });
+</script>

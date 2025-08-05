@@ -1,0 +1,95 @@
+﻿@model OptiShape.Models.Placanje
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var entry in ViewData.ModelState)
+            {
+                foreach (var error in entry.Value.Errors)
+                {
+                    <li><strong>@entry.Key</strong>: @error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+@{
+    ViewData["Title"] = "Kreiraj plaćanje";
+}
+
+<style>
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s ease-out forwards;
+    }
+
+    @@keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .input-icon {
+        position: relative;
+    }
+
+    .btn-click-effect {
+        transition: transform 0.15s ease;
+    }
+
+        .btn-click-effect:active {
+            transform: scale(0.95);
+        }
+</style>
+
+<div class="container mt-5 mb-5 fade-in">
+    <h1 class="text-center text-primary mb-4 fw-bold">💳 Novo plaćanje</h1>
+    <form asp-action="Create" method="post" class="shadow-lg p-5 bg-white rounded-4 border">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div class="row g-3">
+            <div class="col-12 input-icon">
+                <label asp-for="IdKorisnika" class="form-label">👤 Korisnik</label>
+                <select asp-for="IdKorisnika" class="form-select" asp-items="ViewBag.IdKorisnika"></select>
+                <span asp-validation-for="IdKorisnika" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 input-icon">
+                <label asp-for="DatumPlacanja" class="form-label">📅 Datum plaćanja</label>
+                <input asp-for="DatumPlacanja" class="form-control" type="date" />
+                <span asp-validation-for="DatumPlacanja" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 input-icon">
+                <label asp-for="Iznos" class="form-label">💰 Iznos</label>
+                <input asp-for="Iznos" class="form-control" />
+                <span asp-validation-for="Iznos" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 input-icon">
+                <label asp-for="NacinPlacanja" class="form-label">💳 Način plaćanja</label>
+                <select asp-for="NacinPlacanja" class="form-select">
+                    <option value="">Odaberite...</option>
+                    <option value="KARTICA">Kartica</option>
+                    <option value="GOTOVINA">Gotovina</option>
+                </select>
+                <span asp-validation-for="NacinPlacanja" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 input-icon d-flex align-items-center">
+                <input asp-for="PopustPrimijenjen" class="form-check-input me-2" type="checkbox" />
+                <label asp-for="PopustPrimijenjen" class="form-label mb-0">Popust primijenjen</label>
+            </div>
+        </div>
+        <div class="mt-4 d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-click-effect">← Nazad</a>
+            <button type="submit" class="btn btn-success btn-click-effect">💾 Sačuvaj</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

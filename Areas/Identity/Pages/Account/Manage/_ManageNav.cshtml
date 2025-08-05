@@ -1,0 +1,86 @@
+﻿@using OptiShape.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+
+<style>
+    /* Center the entire profile page content */
+    body {
+        overflow-x: hidden;
+    }
+
+    /* Fix the profile content alignment */
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+        /* Target the row that contains the profile content */
+        .container .row {
+            width: 100%;
+            justify-content: center;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+            /* Make the main content centered and full width */
+            .container .row > div {
+                max-width: 1000px;
+                flex: 0 0 100%;
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+    /* External logins styling if needed */
+    .manage-nav {
+        background-color: white;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .nav-pills .nav-link {
+        color: #334155;
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .nav-pills .nav-link:hover:not(.active) {
+            background-color: #f1f5f9;
+            color: #2563eb;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #2563eb;
+            color: white;
+        }
+
+    .nav-icon {
+        margin-right: 8px;
+    }
+</style>
+
+@if (hasExternalLogins)
+{
+    <div class="manage-nav">
+        <ul class="nav nav-pills">
+            <li id="external-logins" class="nav-item">
+                <a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">
+                    <span class="nav-icon">🔗</span> Vanjska prijavljivanja
+                </a>
+            </li>
+        </ul>
+    </div>
+}

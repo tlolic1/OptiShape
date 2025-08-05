@@ -1,0 +1,148 @@
+﻿@model OptiShape.Models.Korisnik
+
+@{
+    ViewData["Title"] = "Brisanje korisnika";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .delete-container {
+            background-color: #ffffff;
+            padding: 30px;
+            margin: 40px auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 600px;
+        }
+
+        h2 {
+            color: #dc2626;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .warning-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: #b91c1c;
+        }
+
+        .details-row {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .details-label {
+            width: 40%;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .details-value {
+            width: 60%;
+            color: #1e293b;
+        }
+
+            .details-value.korisnik {
+                font-weight: 700;
+            }
+
+        .btn-group {
+            margin-top: 30px;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+
+            .btn-danger:hover {
+                background-color: #dc2626;
+            }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-left: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-secondary:hover {
+                background-color: #cbd5e1;
+            }
+    </style>
+}
+
+<div class="delete-container">
+    <h2>Brisanje korisnika</h2>
+
+    <div class="warning-text">Da li ste sigurni da želite obrisati ovog korisnika?</div>
+
+    <div class="details-row">
+        <div class="details-label">Ime i prezime:</div>
+        <div class="details-value korisnik">@Model.Ime @Model.Prezime</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Email:</div>
+        <div class="details-value">@Model.Email</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Datum rođenja:</div>
+        <div class="details-value">@Model.DatumRodjenja.ToString("dd.MM.yyyy")</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Visina (cm):</div>
+        <div class="details-value">@Model.Visina</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Težina (kg):</div>
+        <div class="details-value">@Model.Tezina</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Spol:</div>
+        <div class="details-value">@Model.Spol</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Cilj:</div>
+        <div class="details-value">@Model.Cilj</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Student:</div>
+        <div class="details-value">@(Model.StudentskiStatus ? "Da" : "Ne")</div>
+    </div>
+
+    <div class="details-row">
+        <div class="details-label">Broj telefona:</div>
+        <div class="details-value">@Model.BrojTelefona</div>
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="IdKorisnika" />
+        <div class="btn-group">
+            <input type="submit" value="Obriši" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
+        </div>
+    </form>
+</div>

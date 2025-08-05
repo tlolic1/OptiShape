@@ -1,0 +1,112 @@
+﻿@model IEnumerable<OptiShape.Controllers.TrenerViewModel>
+
+@{
+    ViewData["Title"] = "Izbor Trenera";
+    ViewData["FixedNavbar"] = true;
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="card border-success shadow-sm mb-4 mt-5">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-person-check-fill me-2"></i>
+                        Odaberi svog personalnog trenera
+                    </h3>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <i class="bi bi-exclamation-circle-fill me-2"></i>
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        Odaberite svog personalnog trenera koji će vam pomoći u postizanju vaših fitness ciljeva.
+                        Personalizirani planovi treninga i stručni savjeti će ubrzati vaš napredak.
+                    </div>
+
+                    <h5 class="card-title mt-4">Dostupni treneri</h5>
+
+                    @if (!Model.Any())
+                    {
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            Trenutno nema dostupnih trenera.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
+                            @foreach (var trener in Model)
+                            {
+                                <div class="col">
+                                    <div class="card h-100 trainer-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@trener.Trener.Ime @trener.Trener.Prezime</h5>
+                                            <p class="card-text">
+                                                <small class="text-muted">Email: @trener.Trener.Email</small><br>
+                                                <small class="text-muted">Telefon: @trener.Trener.BrojTelefona</small><br>
+                                                <small class="text-muted">Iskustvo: @trener.BrojKorisnika korisnik/a</small>
+                                            </p>
+                                            <form method="post" asp-controller="Home" asp-action="OdaberiTrenera" class="mt-3">
+                                                <input type="hidden" name="trenerId" value="@trener.Trener.IdKorisnika" />
+                                                <button type="submit" class="btn btn-outline-success w-100">
+                                                    <i class="bi bi-check2-circle me-2"></i>
+                                                    Odaberi trenera
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Odabirom trenera dobit ćete personalizirani program treninga.</small>
+                        <a asp-controller="Home" asp-action="Dashboard" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Nazad na dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .trainer-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #e0e0e0;
+    }
+
+        .trainer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .card-body .btn {
+        transition: all 0.3s ease;
+    }
+
+        .card-body .btn:hover {
+            background-color: #198754;
+            color: white;
+        }
+</style>

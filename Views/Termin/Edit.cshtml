@@ -1,0 +1,127 @@
+﻿@model OptiShape.Models.Termin
+
+@{
+    ViewData["Title"] = "Uredi termin";
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .edit-container {
+            background-color: #ffffff;
+            padding: 30px;
+            margin: 40px auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            max-width: 700px;
+        }
+
+        h2 {
+            color: #1e3a8a;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #334155;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+            .form-control:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+                outline: none;
+            }
+
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+
+            .btn-primary:hover {
+                background-color: #1d4ed8;
+            }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+            .btn-secondary:hover {
+                background-color: #cbd5e1;
+            }
+
+        .text-danger {
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: block;
+        }
+    </style>
+}
+
+<div class="edit-container">
+    <h2>Uredi termin</h2>
+
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="IdTermina" />
+
+        <div class="form-group">
+            <label asp-for="IdKorisnika" class="form-label">👤 Korisnik</label>
+            <select asp-for="IdKorisnika" class="form-control" asp-items="ViewBag.Korisnici"></select>
+
+            <span asp-validation-for="IdKorisnika" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Datum" class="form-label">📅 Datum i vrijeme termina</label>
+            <input asp-for="Datum" class="form-control" type="datetime-local" />
+            <span asp-validation-for="Datum" class="text-danger"></span>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">💾 Spremi</button>
+            <a asp-action="Index" class="btn btn-secondary">Nazad na listu</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
